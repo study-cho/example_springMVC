@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>>
-<c:url var="root" value="/"/>
+<c:set var="root" value="${pageContext.request.contextPath}/" />
 
 <script>
   alert("로그아웃 되었습니다")
