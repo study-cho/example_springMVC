@@ -10,7 +10,7 @@
 
 개발환경
 - IDE : IntelliJ
-- JDK : 17
+- JDK : 11
 - Tomcat : 9.0
 - DB : Oracle
 - MyBatis
