@@ -130,3 +130,5 @@ fabric.properties
 *.iml
 out
 gen
+
+!/src/main/webapp/WEB-INF/properties/db.properties
