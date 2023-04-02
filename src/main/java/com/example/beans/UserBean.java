@@ -28,8 +28,10 @@ public class UserBean {
     private String user_pw2;
 
     private boolean userIdExist;
+    private boolean userLogin;
 
     public UserBean() {
         this.userIdExist = false;
+        this.userLogin = false;
     }
 }

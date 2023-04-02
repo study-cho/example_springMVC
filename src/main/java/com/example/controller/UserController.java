@@ -5,10 +5,12 @@ import com.example.service.UserService;
 import com.example.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @Controller
@@ -18,9 +20,30 @@ public class UserController {
 
     private final UserService userService;
 
+    @Resource(name = "loginUserBean")
+    private UserBean loginUserBean;
+
     @GetMapping("/login")
-    public String login() {
+    public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
+                        @RequestParam(value = "fail", defaultValue = "false") boolean fail,
+                        Model model) {
+
+        model.addAttribute("fail", fail);
         return "user/login";
+    }
+
+    @PostMapping("/login_pro")
+    public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
+                            BindingResult result) {
+        if(result.hasErrors()) return "user/login";
+
+        userService.getLoginUserInfo(tempLoginUserBean);
+
+        if(loginUserBean.isUserLogin())
+            return "user/login_success";
+        else
+            return "user/login_fail";
+//            return "redirect:/user/login?fail=true";
     }
 
     @GetMapping("/join")
