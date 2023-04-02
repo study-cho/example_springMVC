@@ -37,8 +37,18 @@ public class UserService {
             loginUserBean.setUser_name(tempUserBean.getUser_name());
             loginUserBean.setUserLogin(true);
         }
-
-        System.out.println("loginUserBean = " + loginUserBean);
     }
 
+    public void getModifyUserInfo(UserBean modifyUserBean) {
+        UserBean tempUserBean = userDao.getModifyUserInfo(loginUserBean.getUser_idx());
+
+        modifyUserBean.setUser_idx(tempUserBean.getUser_idx());
+        modifyUserBean.setUser_id(tempUserBean.getUser_id());
+        modifyUserBean.setUser_name(tempUserBean.getUser_name());
+    }
+
+    public void modifyUserInfo(UserBean modifyUserBean) {
+        modifyUserBean.setUser_idx(loginUserBean.getUser_idx());
+        userDao.modifyUserInfo(modifyUserBean);
+    }
 }
