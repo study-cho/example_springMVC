@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.beans.UserBean;
+import com.example.service.UserService;
 import com.example.validator.UserValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -11,9 +13,10 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-
+    private final UserService userService;
 
     @GetMapping("/login")
     public String login() {
@@ -37,6 +40,7 @@ public class UserController {
         if(result.hasErrors())
             return "user/join";
 
+        userService.addUserInfo(joinUserBean);
         return "user/join_success";
     }
 

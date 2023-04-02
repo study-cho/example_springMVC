@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.beans.UserBean;
 import com.example.dao.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class UserService {
             return true;
         else
             return false;
+    }
+
+    public void addUserInfo(UserBean joinUserBean) {
+        userDao.addUserInfo(joinUserBean);
     }
 
 }
