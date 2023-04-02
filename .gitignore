@@ -131,4 +131,4 @@ fabric.properties
 out
 gen
 
-!/src/main/webapp/WEB-INF/properties/db.properties
+/src/main/webapp/WEB-INF/properties/db.properties
