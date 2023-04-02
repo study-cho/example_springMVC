@@ -3,9 +3,8 @@ package com.example.config;
 import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
 import com.example.mapper.TopMenuMapper;
+import com.example.mapper.UserMapper;
 import com.example.service.TopMenuService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -81,6 +80,13 @@ public class ServletAppConfig implements WebMvcConfigurer {
     @Bean
     public MapperFactoryBean<TopMenuMapper> getTopMenuMapper(SqlSessionFactory factory) throws Exception {
         MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<>(TopMenuMapper.class);
+        factoryBean.setSqlSessionFactory(factory);
+        return factoryBean;
+    }
+
+    @Bean
+    public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory) throws Exception {
+        MapperFactoryBean<UserMapper> factoryBean = new MapperFactoryBean<>(UserMapper.class);
         factoryBean.setSqlSessionFactory(factory);
         return factoryBean;
     }
