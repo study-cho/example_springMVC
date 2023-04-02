@@ -37,6 +37,8 @@ public class UserService {
             loginUserBean.setUser_name(tempUserBean.getUser_name());
             loginUserBean.setUserLogin(true);
         }
+
+        System.out.println("loginUserBean = " + loginUserBean);
     }
 
 }

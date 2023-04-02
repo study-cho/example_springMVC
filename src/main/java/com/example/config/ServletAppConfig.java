@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.beans.UserBean;
 import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
 import com.example.mapper.TopMenuMapper;
@@ -18,6 +19,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.*;
+
+import javax.annotation.Resource;
 
 @Configuration
 @EnableWebMvc
@@ -41,6 +44,9 @@ public class ServletAppConfig implements WebMvcConfigurer {
 
     @Autowired
     private TopMenuService topMenuService;
+
+    @Resource(name = "loginUserBean")
+    private UserBean loginUserBean;
 
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp("/WEB-INF/views/", ".jsp");
@@ -93,7 +99,7 @@ public class ServletAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
+        TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService, loginUserBean);
         registry.addInterceptor(topMenuInterceptor).addPathPatterns("/**");
     }
 
