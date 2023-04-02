@@ -1,24 +1,29 @@
 package com.example.config;
 
+import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
+import com.example.mapper.TopMenuMapper;
+import com.example.service.TopMenuService;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.example.controller")
+@ComponentScan("com.example.dao")
+@ComponentScan("com.example.service")
 @PropertySource("/WEB-INF/properties/db.properties")
+@RequiredArgsConstructor
 public class ServletAppConfig implements WebMvcConfigurer {
 
     @Value("${db.classname}")
@@ -33,6 +38,8 @@ public class ServletAppConfig implements WebMvcConfigurer {
     @Value("${db.password}")
     private String db_password;
 
+    private final TopMenuService topMenuService;
+
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp("/WEB-INF/views/", ".jsp");
     }
@@ -46,7 +53,7 @@ public class ServletAppConfig implements WebMvcConfigurer {
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(db_classname);
-        dataSource.setUsername(db_url);
+        dataSource.setUrl(db_url);
         dataSource.setUsername(db_username);
         dataSource.setPassword(db_password);
         return dataSource;
@@ -56,7 +63,7 @@ public class ServletAppConfig implements WebMvcConfigurer {
     @Bean
     public SqlSessionFactory factory(BasicDataSource source) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(dataSource());
+        factoryBean.setDataSource(source);
         return factoryBean.getObject();
     }
 
@@ -68,5 +75,16 @@ public class ServletAppConfig implements WebMvcConfigurer {
         return factoryBean;
     }
 
+    @Bean
+    public MapperFactoryBean<TopMenuMapper> getTopMenuMapper(SqlSessionFactory factory) throws Exception {
+        MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<>(TopMenuMapper.class);
+        factoryBean.setSqlSessionFactory(factory);
+        return factoryBean;
+    }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
+        registry.addInterceptor(topMenuInterceptor).addPathPatterns("/**");
+    }
 }
