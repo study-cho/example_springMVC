@@ -1,6 +1,7 @@
 package com.example.config;
 
 import com.example.beans.UserBean;
+import com.example.interceptor.CheckLoginInterceptor;
 import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
 import com.example.mapper.TopMenuMapper;
@@ -101,6 +102,11 @@ public class ServletAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService, loginUserBean);
         registry.addInterceptor(topMenuInterceptor).addPathPatterns("/**");
+
+        CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
+        registry.addInterceptor(checkLoginInterceptor)
+                .addPathPatterns("/user/modify", "/user/logout", "/board/*")
+                .excludePathPatterns("/board/main");
     }
 
     @Bean
