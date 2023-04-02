@@ -4,6 +4,7 @@ import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
 import com.example.mapper.TopMenuMapper;
 import com.example.service.TopMenuService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
@@ -23,7 +26,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @ComponentScan("com.example.dao")
 @ComponentScan("com.example.service")
 @PropertySource("/WEB-INF/properties/db.properties")
-@RequiredArgsConstructor
 public class ServletAppConfig implements WebMvcConfigurer {
 
     @Value("${db.classname}")
@@ -38,7 +40,8 @@ public class ServletAppConfig implements WebMvcConfigurer {
     @Value("${db.password}")
     private String db_password;
 
-    private final TopMenuService topMenuService;
+    @Autowired
+    private TopMenuService topMenuService;
 
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp("/WEB-INF/views/", ".jsp");
@@ -86,5 +89,17 @@ public class ServletAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
         registry.addInterceptor(topMenuInterceptor).addPathPatterns("/**");
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
+        res.setBasenames("/WEB-INF/properties/error_message");
+        return res;
     }
 }
