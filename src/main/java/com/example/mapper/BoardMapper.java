@@ -1,10 +1,7 @@
 package com.example.mapper;
 
 import com.example.beans.ContentBean;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -45,4 +42,7 @@ public interface BoardMapper {
             "content_file = #{content_file, jdbcType=VARCHAR} " +
             "WHERE content_idx = #{content_idx}")
     void modifyContentInfo(ContentBean modifyContentBean);
+
+    @Delete("DELETE FROM content_table WHERE content_idx = #{content_idx}")
+    void deleteContentInfo(int content_idx);
 }
