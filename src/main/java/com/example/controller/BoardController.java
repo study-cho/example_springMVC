@@ -72,8 +72,37 @@ public class BoardController {
     }
 
     @GetMapping("/modify")
-    public String modify() {
+    public String modify(@RequestParam("board_info_idx") int board_info_idx,
+                         @RequestParam("content_idx") int content_idx,
+                         @ModelAttribute("modifyContentBean") ContentBean modifyContentBean,
+                         Model model) {
+
+        model.addAttribute("board_info_idx", board_info_idx);
+        model.addAttribute("content_idx", content_idx);
+
+        ContentBean temp = boardService.getContentInfo(content_idx);
+
+        modifyContentBean.setContent_board_idx(board_info_idx);
+        modifyContentBean.setContent_idx(content_idx);
+        modifyContentBean.setContent_writer_idx(temp.getContent_writer_idx());
+        modifyContentBean.setContent_writer_name(temp.getContent_writer_name());
+        modifyContentBean.setContent_date(temp.getContent_date());
+        modifyContentBean.setContent_text(temp.getContent_text());
+        modifyContentBean.setContent_subject(temp.getContent_subject());
+        modifyContentBean.setContent_file(temp.getContent_file());
+
         return "board/modify";
+    }
+
+    @PostMapping("/modify_pro")
+    public String modify_pro(@Valid @ModelAttribute("modifyContentBean") ContentBean modifyContentBean,
+                             BindingResult result) {
+        if(result.hasErrors()) {
+            return "board/modify";
+        }
+
+        boardService.modifyContentInfo(modifyContentBean);
+        return "board/modify_success";
     }
 
     @GetMapping("/delete")

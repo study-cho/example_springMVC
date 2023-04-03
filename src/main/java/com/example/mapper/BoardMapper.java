@@ -4,6 +4,7 @@ import com.example.beans.ContentBean;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -38,4 +39,10 @@ public interface BoardMapper {
             "WHERE ct.content_writer_idx = ut.user_idx " +
             "and content_idx=#{content_idx}")
     ContentBean getContentInfo(int content_idx);
+
+    @Update("UPDATE content_table " +
+            "SET content_subject = #{content_subject}, content_text = #{content_text}, " +
+            "content_file = #{content_file, jdbcType=VARCHAR} " +
+            "WHERE content_idx = #{content_idx}")
+    void modifyContentInfo(ContentBean modifyContentBean);
 }
