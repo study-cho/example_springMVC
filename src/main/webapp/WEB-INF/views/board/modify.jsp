@@ -14,7 +14,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
-
+<script>
+  function fileReset() {
+    $('#content_file').val(null)
+    $('img').remove()
+  }
+</script>
 <body>
 
 <!-- 상단 메뉴 부분 -->
@@ -52,6 +57,7 @@
               <form:label path="upload_file">첨부 이미지</form:label>
               <c:if test="${modifyContentBean.content_file != null}">
                 <form:hidden path="content_file"/>
+                <input type="button" value="삭제" onclick="fileReset()">
                 <img src="${root}upload/${modifyContentBean.content_file}" width="100%"/>
               </c:if>
               <form:input path="upload_file" type="file" class="form-control" accept="image/*"/>
