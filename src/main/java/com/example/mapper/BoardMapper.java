@@ -2,6 +2,7 @@ package com.example.mapper;
 
 import com.example.beans.ContentBean;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface BoardMapper {
             "WHERE ct.content_writer_idx = ut.user_idx " +
             "AND ct.content_board_idx = #{board_info_idx}" +
             "ORDER BY ct.content_idx DESC")
-    List<ContentBean> getContentList(int board_info_idx);
+    List<ContentBean> getContentList(int board_info_idx, RowBounds rowBounds);
 
     @Select("SELECT ut.user_name AS content_writer_name, " +
             "to_char(ct.content_date, 'YYYY-MM-DD') AS content_date, " +
@@ -45,4 +46,7 @@ public interface BoardMapper {
 
     @Delete("DELETE FROM content_table WHERE content_idx = #{content_idx}")
     void deleteContentInfo(int content_idx);
+
+    @Select("SELECT count(*) FROM content_table WHERE content_board_idx = #{content_board_idx}")
+    int getContentCnt(int content_board_idx);
 }

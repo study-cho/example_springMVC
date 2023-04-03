@@ -1,9 +1,11 @@
 package com.example.service;
 
 import com.example.beans.ContentBean;
+import com.example.beans.PageBean;
 import com.example.beans.UserBean;
 import com.example.dao.BoardDao;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,12 @@ public class BoardService {
 
     @Value("${path.upload}")
     private String path_upload;
+
+    @Value("${page.listCnt}")
+    private int page_listCnt;
+
+    @Value("${page.paginationCnt}")
+    private int page_paginationCnt;
 
     @Resource(name = "loginUserBean")
     private UserBean loginUserBean;
@@ -56,8 +64,11 @@ public class BoardService {
         return boardDao.getBoardInfoName(board_info_idx);
     }
 
-    public List<ContentBean> getContentList(int board_info_idx) {
-        return boardDao.getContentList(board_info_idx);
+    public List<ContentBean> getContentList(int board_info_idx, int page) {
+        int start = (page - 1) * page_listCnt;
+        RowBounds rowBounds = new RowBounds(start, page_listCnt);
+
+        return boardDao.getContentList(board_info_idx, rowBounds);
     }
 
     public ContentBean getContentInfo(int content_idx) {
@@ -77,5 +88,10 @@ public class BoardService {
 
     public void deleteContentInfo(int content_idx) {
         boardDao.deleteContentInfo(content_idx);
+    }
+
+    public PageBean getContentCnt(int content_board_idx, int currentPage) {
+        int contentCnt = boardDao.getContentCnt(content_board_idx);
+        return new PageBean(contentCnt, currentPage, page_listCnt, page_paginationCnt);
     }
 }
