@@ -2,10 +2,12 @@ package com.example.config;
 
 import com.example.beans.UserBean;
 import com.example.interceptor.CheckLoginInterceptor;
+import com.example.interceptor.CheckWriterInterceptor;
 import com.example.interceptor.TopMenuInterceptor;
 import com.example.mapper.BoardMapper;
 import com.example.mapper.TopMenuMapper;
 import com.example.mapper.UserMapper;
+import com.example.service.BoardService;
 import com.example.service.TopMenuService;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -46,6 +48,9 @@ public class ServletAppConfig implements WebMvcConfigurer {
 
     @Autowired
     private TopMenuService topMenuService;
+
+    @Autowired
+    private BoardService boardService;
 
     @Resource(name = "loginUserBean")
     private UserBean loginUserBean;
@@ -108,6 +113,10 @@ public class ServletAppConfig implements WebMvcConfigurer {
         registry.addInterceptor(checkLoginInterceptor)
                 .addPathPatterns("/user/modify", "/user/logout", "/board/*")
                 .excludePathPatterns("/board/main");
+
+        CheckWriterInterceptor checkWriterInterceptor = new CheckWriterInterceptor(loginUserBean, boardService);
+        registry.addInterceptor(checkWriterInterceptor)
+                .addPathPatterns("/board/modify", "/board/delete");
     }
 
     @Bean

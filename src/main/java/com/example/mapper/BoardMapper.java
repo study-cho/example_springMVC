@@ -33,7 +33,7 @@ public interface BoardMapper {
 
     @Select("SELECT ut.user_name AS content_writer_name, " +
             "to_char(ct.content_date, 'YYYY-MM-DD') AS content_date, " +
-            "ct.content_subject, ct.content_text, ct.content_file " +
+            "ct.content_subject, ct.content_text, ct.content_file, ct.content_writer_idx " +
             "FROM CONTENT_TABLE ct, USER_TABLE ut " +
             "WHERE ct.content_writer_idx = ut.user_idx " +
             "and content_idx=#{content_idx}")
