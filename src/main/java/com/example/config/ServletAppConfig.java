@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
@@ -119,5 +120,10 @@ public class ServletAppConfig implements WebMvcConfigurer {
         ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
         res.setBasenames("/WEB-INF/properties/error_message");
         return res;
+    }
+
+    @Bean
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }
