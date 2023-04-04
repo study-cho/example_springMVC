@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.beans.MessageBean;
 import com.example.beans.UserBean;
 import com.example.service.UserService;
 import com.example.validator.UserValidator;
@@ -51,7 +52,7 @@ public class UserController {
         return "user/join";
     }
 
-    @InitBinder
+    @InitBinder({"loginUserBean", "joinUserBean", "tempLoginUserBean", "modifyUserBean"})
     public void initBinder(WebDataBinder binder) {
         UserValidator validator = new UserValidator();
         binder.addValidators(validator);
@@ -59,12 +60,13 @@ public class UserController {
 
     @PostMapping("/join_pro")
     public String join_pro(@Valid @ModelAttribute("joinUserBean") UserBean joinUserBean,
-                           BindingResult result) {
+                           BindingResult result, Model model) {
         if(result.hasErrors())
             return "user/join";
 
         userService.addUserInfo(joinUserBean);
-        return "user/join_success";
+        model.addAttribute("mes", new MessageBean("가입이 완료되었습니다","/"));
+        return "common/messageRedirect";
     }
 
     @GetMapping("/modify")
