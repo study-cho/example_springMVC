@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 상단 메뉴 부분 -->
+<nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top shadow-lg">
+    <a class="navbar-brand" th:href="@{/main}">SoftCampus</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav">
+            <th:block th:each="obj : ${topMenuList}">
+                <li class="nav-item">
+                    <a th:href="@{/board/main(board_info_idx=${obj.board_info_idx})}" class="nav-link" th:text="${obj.board_info_name}">제목</a>
+                </li>
+            </th:block>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <th:block th:if="${loginUserBean.userLogin == true}">
+                    <li class="nav-item">
+                        <a th:href="@{/user/modify}" class="nav-link">정보수정</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/user/logout}" class="nav-link">로그아웃</a>
+                    </li>
+            </th:block>
+            <th:block th:unless="${loginUserBean.userLogin == true}">
+                    <li class="nav-item">
+                        <a th:href="@{/user/login}" class="nav-link">로그인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/user/join}" class="nav-link">회원가입</a>
+                    </li>
+            </th:block>
+        </ul>
+    </div>
+</nav>
