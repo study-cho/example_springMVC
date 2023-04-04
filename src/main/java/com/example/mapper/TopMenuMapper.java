@@ -1,10 +1,12 @@
 package com.example.mapper;
 
 import com.example.beans.BoardInfoBean;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@Mapper
 public interface TopMenuMapper {
 
     @Select("SELECT board_info_idx, board_info_name " +

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@PropertySource("/WEB-INF/properties/option.properties")
+@PropertySource("classpath:/option.properties")
 public class BoardService {
 
     private final BoardDao boardDao;

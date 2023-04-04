@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
+@Mapper
 public interface BoardMapper {
 
     @SelectKey(statement = "SELECT content_seq.nextval FROM dual",
