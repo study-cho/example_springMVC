@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:if="${#strings.length(mes.message) != 0}">
+    <th:block th:if="${#strings.length(data.message) != 0}">
         <script>
-            top.alert("[[${mes.message}]]");
+            top.alert("[[${data.message}]]");
         </script>
     </th:block>
-    <th:block th:if="${#strings.length(mes.redirectUri) != 0}">
+    <th:block th:if="${#strings.length(data.redirectUri) != 0}">
         <script>
-            top.location.href = '[[${mes.redirectUri}]]';
+            top.location.href = '[[${data.redirectUri}]]';
         </script>
     </th:block>
 </head>

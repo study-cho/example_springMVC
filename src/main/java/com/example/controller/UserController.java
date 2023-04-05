@@ -38,16 +38,17 @@ public class UserController {
 
     @PostMapping("/login_pro")
     public String login_pro(@Valid @ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean,
-                            BindingResult result) {
+                            BindingResult result, Model model) {
         if(result.hasErrors()) return "user/login";
 
         userService.getLoginUserInfo(tempLoginUserBean);
 
         if(loginUserBean.isUserLogin())
-            return "user/login_success";
+            model.addAttribute("data", new MessageBean(LOGIN_SUCCESS.getMessage(), "/main"));
         else
-            return "user/login_fail";
-//            return "redirect:/user/login?fail=true";
+            model.addAttribute("data", new MessageBean(LOGIN_FAIL.getMessage(), "/user/login?fail=true"));
+
+        return "common/messageRedirect";
     }
 
     @GetMapping("/join")
@@ -69,7 +70,7 @@ public class UserController {
             return "user/join";
 
         userService.addUserInfo(joinUserBean);
-        model.addAttribute("mes", new MessageBean(JOIN_SUCCESS.getMessage(),"/"));
+        model.addAttribute("data", new MessageBean(JOIN_SUCCESS.getMessage(),"/"));
         return "common/messageRedirect";
     }
 
