@@ -82,21 +82,24 @@ public class UserController {
 
     @PostMapping("/modify_pro")
     public String modify_pro(@Valid @ModelAttribute("modifyUserBean") UserBean modifyUserBean,
-                             BindingResult result) {
+                             BindingResult result, Model model) {
         if(result.hasErrors()) return "user/modify";
 
         userService.modifyUserInfo(modifyUserBean);
-        return "user/modify_success";
+        model.addAttribute("data", new MessageBean(MODIFY_SUCCESS.getMessage(), "/user/modify"));
+        return "common/messageRedirect";
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(Model model) {
         loginUserBean.setUserLogin(false);
-        return "user/logout";
+        model.addAttribute("data", new MessageBean(LOGOUT.getMessage(), "/"));
+        return "common/messageRedirect";
     }
 
     @GetMapping("/not_login")
-    public String not_login() {
-        return "user/not_login";
+    public String not_login(Model model) {
+        model.addAttribute("data", new MessageBean(NOT_LOGIN.getMessage(), "/user/login"));
+        return "common/messageRedirect";
     }
 }
