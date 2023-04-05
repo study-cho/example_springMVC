@@ -8,7 +8,9 @@
     </th:block>
     <th:block th:if="${#strings.length(data.redirectUri) != 0}">
         <script>
-            top.location.href = '[[${data.redirectUri}]]';
+            var url = '[[${data.redirectUri}]]';
+            var newUrl = url.replaceAll(/&amp;/gi, '&');
+            top.location.href = newUrl;
         </script>
     </th:block>
 </head>

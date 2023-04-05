@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.beans.ContentBean;
 import com.example.beans.PageBean;
 import com.example.beans.UserBean;
+import com.example.common.MessageBean;
 import com.example.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.example.common.AlertMessages.*;
 
 @Controller
 @RequestMapping("/board")
@@ -45,9 +48,9 @@ public class BoardController {
     }
 
     @GetMapping("/read")
-    public String read(@RequestParam("board_info_idx") int board_info_idx,
-                       @RequestParam("content_idx") int content_idx,
-                       @RequestParam("page") int page,
+    public String read(@RequestParam("board_info_idx") Integer board_info_idx,
+                       @RequestParam("content_idx") Integer content_idx,
+                       @RequestParam("page") Integer page,
                        Model model) {
 
         model.addAttribute("board_info_idx", board_info_idx); // 목록보기
@@ -72,12 +75,15 @@ public class BoardController {
 
     @PostMapping("/write_pro")
     public String write_pro(@Valid @ModelAttribute("writeContentBean") ContentBean writeContentBean,
-                            BindingResult result) {
+                            BindingResult result, Model model) {
         if(result.hasErrors())
             return "board/write";
 
         boardService.addContentInfo(writeContentBean);
-        return "board/write_success";
+        model.addAttribute("data", new MessageBean(WRITE_SUCCESS.getMessage(),
+                "/board/read?board_info_idx="+writeContentBean.getContent_board_idx()+"&content_idx="+writeContentBean.getContent_idx()+"page=1"));
+
+        return "common/messageRedirect";
     }
 
     @GetMapping("/modify")
@@ -112,30 +118,32 @@ public class BoardController {
                              @RequestParam("page") int page,
                              Model model) {
 
-        model.addAttribute("page", page);
-
         if(result.hasErrors()) {
             return "board/modify";
         }
 
         boardService.modifyContentInfo(modifyContentBean);
 
-        return "board/modify_success";
+        model.addAttribute("data", new MessageBean(WRITE_SUCCESS.getMessage(),
+                "/board/read?board_info_idx="+modifyContentBean.getContent_board_idx()+"&content_idx="+modifyContentBean.getContent_idx()+"&page="+ page));
+
+        return "common/messageRedirect";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam("board_info_idx") int board_info_idx,
                          @RequestParam("content_idx") int content_idx,
+                         @RequestParam("page") int page,
                          Model model)   {
         boardService.deleteContentInfo(content_idx);
 
-        model.addAttribute("board_info_idx", board_info_idx);
-
-        return "board/delete";
+        model.addAttribute("data", new MessageBean(DELETE.getMessage(), "/board/main?board_info_idx="+board_info_idx+"&page="+page));
+        return "common/messageRedirect";
     }
 
     @GetMapping("/not_writer")
-    public String not_writer() {
-        return "board/not_writer";
+    public String not_writer(Model model) {
+        model.addAttribute("data", new MessageBean(NOT_WRITER.getMessage(), "/"));
+        return "common/messageRedirect";
     }
 }
