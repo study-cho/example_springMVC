@@ -1,7 +1,8 @@
 package com.example.controller;
 
-import com.example.beans.MessageBean;
+import com.example.common.MessageBean;
 import com.example.beans.UserBean;
+import com.example.common.AlertMessages;
 import com.example.service.UserService;
 import com.example.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import static com.example.common.AlertMessages.*;
 
 @Controller
 @RequestMapping("/user")
@@ -52,6 +55,7 @@ public class UserController {
         return "user/join";
     }
 
+    // MessageBean 때문에 @Valid 충돌 ==> 사용할 빈 지정
     @InitBinder({"loginUserBean", "joinUserBean", "tempLoginUserBean", "modifyUserBean"})
     public void initBinder(WebDataBinder binder) {
         UserValidator validator = new UserValidator();
@@ -65,7 +69,7 @@ public class UserController {
             return "user/join";
 
         userService.addUserInfo(joinUserBean);
-        model.addAttribute("mes", new MessageBean("가입이 완료되었습니다","/"));
+        model.addAttribute("mes", new MessageBean(JOIN_SUCCESS.getMessage(),"/"));
         return "common/messageRedirect";
     }
 
