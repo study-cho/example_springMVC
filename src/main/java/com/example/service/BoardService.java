@@ -22,7 +22,7 @@ public class BoardService {
 
     private final BoardDao boardDao;
 
-    @Value("${path.upload}")
+    @Value("${spring.servlet.multipart.location}")
     private String path_upload;
 
     @Value("${page.listCnt}")

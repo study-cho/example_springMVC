@@ -7,11 +7,9 @@ import com.example.interceptor.TopMenuInterceptor;
 import com.example.service.BoardService;
 import com.example.service.TopMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
@@ -43,8 +41,10 @@ public class ServletAppConfig implements WebMvcConfigurer {
                 .addPathPatterns("/board/modify", "/board/delete");
     }
 
-    @Bean
-    public StandardServletMultipartResolver multipartResolver() {
-        return new StandardServletMultipartResolver();
+    // 외부 경로로 접근하기 위한 리소스 핸들러 설정
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:///C:Temp/upload/");
     }
 }
