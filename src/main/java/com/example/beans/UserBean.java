@@ -1,12 +1,13 @@
 package com.example.beans;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
+@Data
+@Builder
 public class UserBean {
 
     private int user_idx;
