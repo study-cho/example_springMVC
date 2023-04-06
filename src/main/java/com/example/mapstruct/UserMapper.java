@@ -15,6 +15,7 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(source = "userId", target = "user_id"),
+            @Mapping(source = "userIdx", target = "user_idx"),
             @Mapping(source = "userName", target = "user_name"),
             @Mapping(source = "userPw", target = "user_pw")
     })

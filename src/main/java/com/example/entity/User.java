@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_seq", allocationSize = 1)
     @Column(name = "user_idx")
     private Integer userIdx;
 
