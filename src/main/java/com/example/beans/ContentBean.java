@@ -1,12 +1,13 @@
 package com.example.beans;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter @Setter
+@Data @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ContentBean {
 
     private int content_idx;
