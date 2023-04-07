@@ -17,5 +17,5 @@
 ----
 Spring -> SpringBoot migration 예정
 - maven -> gradle
+- .jsp -> Thymeleaf
 - mybatis -> springDataJPA
-- ...
