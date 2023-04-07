@@ -81,7 +81,7 @@ public class BoardController {
 
         boardService.addContentInfo(writeContentBean);
         model.addAttribute("data", new MessageBean(WRITE_SUCCESS.getMessage(),
-                "/board/read?board_info_idx="+writeContentBean.getContent_board_idx()+"&content_idx="+writeContentBean.getContent_idx()+"page=1"));
+                "/board/read?board_info_idx="+writeContentBean.getContent_board_idx()+"&content_idx="+writeContentBean.getContent_idx()+"&page=1"));
 
         return "common/messageRedirect";
     }

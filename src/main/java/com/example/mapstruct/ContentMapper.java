@@ -20,7 +20,7 @@ public interface ContentMapper {
             @Mapping(source = "contentFile", target = "content_file"),
             @Mapping(source = "contentWriterIdx", target = "content_writer_idx"),
             @Mapping(source = "contentBoardIdx", target = "content_board_idx"),
-            @Mapping(source = "contentDate", target = "content_date")
+            @Mapping(source = "contentDate", target = "content_date", dateFormat = "yyyy-MM-dd")
     })
     ContentBean toDTO(Content content);
 
@@ -31,7 +31,7 @@ public interface ContentMapper {
             @Mapping(source = "content_file", target = "contentFile"),
             @Mapping(source = "content_writer_idx", target = "contentWriterIdx"),
             @Mapping(source = "content_board_idx", target = "contentBoardIdx"),
-            @Mapping(source = "content_date", target = "contentDate")
+            @Mapping(source = "content_date", target = "contentDate", dateFormat = "yyyy-MM-dd")
     })
     Content toEntity(ContentBean contentBean);
 }

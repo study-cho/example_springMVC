@@ -11,8 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user_seq", allocationSize = 1)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+    @SequenceGenerator(name = "user_seq_gen",sequenceName = "user_seq", allocationSize = 1)
     @Column(name = "user_idx")
     private Integer userIdx;
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "content_table")
@@ -16,8 +17,8 @@ import javax.persistence.*;
 public class Content {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "content_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_seq_gen")
+    @SequenceGenerator(name = "content_seq_gen", sequenceName = "content_seq", allocationSize = 1)
     @Column(name = "content_idx")
     private int contentIdx;
 
@@ -37,5 +38,6 @@ public class Content {
     private int contentBoardIdx;
 
     @Column(name = "content_date")
-    private String contentDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date contentDate;
 }
